@@ -1,0 +1,67 @@
+project:
+  type: website
+
+  render:
+    - index.qmd
+    - fluorophores_ms.ipynb
+    - bacteria_ms.ipynb
+
+execute: 
+  freeze: true  # We don't want to re-execute notebooks in every build
+
+website:
+  title: "LIF-based detection of bacteria in aerosols"
+  favicon: assets/favicon.ico
+
+  navbar:
+    left:
+      - text: Home
+        href: index.qmd
+      
+      - text: Reports
+        menu:
+          - text: "Fluorophores detection"
+            href: fluorophores_ms.ipynb
+          - text: "Bacteria detection and classification"
+            href: bacteria_ms.ipynb
+
+      - text: About
+        menu:
+          - text: "This Site"
+            href: about.qmd
+          - text: "ISGlobal"
+            href: https://www.isglobal.org/en
+          - text: "Climate & Health Programme"
+            href: https://www.isglobal.org/en/-/clima-y-salud
+          - text: "Alejandro Fontal"
+            href: https://alfontal.dev
+
+
+    right:
+      - icon: github
+        menu: 
+        - text: "GitHub Repository"
+          href: https://github.com/AlFontal/lif-bacteria-aerosols-ms
+        - text: "Raise an issue"
+          href: https://github.com/AlFontal/lif-bacteria-aerosols-ms/issues/new
+      - icon: envelope
+        href: mailto:alejandro.fontal.92@gmail.com
+        aria-label: Mail
+
+format:
+  html:
+    number-sections: true
+    highlight-style: github
+    theme:
+      light: litera
+    css: custom.css
+    toc: true
+    toc-title: "CONTENTS"
+    toc-location: right
+    code-tools:
+      source: true
+      toggle: true
+    code-summary: "Show Code"
+
+
+
