@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.7.34">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-08-28">
+<meta name="dcterms.date" content="2025-09-02">
 
 <title>Detecting aerosolized fluorophores with Rapid-E – LIF-based detection of bacteria in aerosols</title>
 <style>
@@ -73,7 +73,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-59898bd1c6b9d2bb783127feaa000c76.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-85914b21fd655aa114cc76ecfef19bd6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -218,6 +218,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#config" id="toc-config" class="nav-link" data-scroll-target="#config">Config</a></li>
   </ul></li>
   <li><a href="#loading-data" id="toc-loading-data" class="nav-link" data-scroll-target="#loading-data">Loading Data</a></li>
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a></li>
   </ul>
 </nav>
     </div>
@@ -303,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 28, 2025</p>
+      <p class="date">September 2, 2025</p>
     </div>
   </div>
   
@@ -319,17 +320,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
 <section id="imports" class="level3">
 <h3 class="anchored" data-anchor-id="imports">Imports</h3>
-<div id="cell-3" class="cell">
+<div id="cell-3" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> bz2</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pickle</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-4" class="cell" data-execution_count="3">
+<div id="cell-5" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sys.path.append(<span class="st">'..'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>sys.path.append(<span class="st">'../../aerosolpy'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-5" class="cell" data-execution_count="4">
+<div id="cell-6" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
@@ -357,7 +358,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="config" class="level3">
 <h3 class="anchored" data-anchor-id="config">Config</h3>
-<div id="cell-7" class="cell" data-execution_count="5">
+<div id="cell-8" class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Matplotlib settings</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib_inline.backend_inline <span class="im">import</span> set_matplotlib_formats</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'font.family'</span>] <span class="op">=</span> <span class="st">'Georgia'</span></span>
@@ -382,7 +383,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="loading-data" class="level2">
 <h2 class="anchored" data-anchor-id="loading-data">Loading Data</h2>
-<div id="cell-9" class="cell" data-execution_count="70">
+<div id="cell-10" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> folder <span class="kw">in</span> glob(<span class="st">'../data/fluorophores/*'</span>):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    fluorophore <span class="op">=</span> os.path.basename(folder)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(<span class="ss">f'</span><span class="sc">{</span>folder<span class="sc">}</span><span class="ss">/particles.pickle.bz2'</span>):</span>
@@ -395,7 +396,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> bz2.BZ2File(<span class="ss">f'</span><span class="sc">{</span>folder<span class="sc">}</span><span class="ss">/particles.pickle.bz2'</span>, <span class="st">'w'</span>) <span class="im">as</span> fh:</span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>            pickle.dump(particles, fh)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-10" class="cell" data-execution_count="7">
+<div id="cell-11" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>particles_dict <span class="op">=</span> {}</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> folder <span class="kw">in</span> glob(<span class="st">'../data/fluorophores/*'</span>):</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    fluorophore <span class="op">=</span> os.path.basename(folder)</span>
@@ -403,13 +404,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        particles <span class="op">=</span> pickle.load(fh)</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    particles_dict[fluorophore] <span class="op">=</span> particles</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-11" class="cell" data-execution_count="8">
+</section>
+<section id="analysis" class="level2">
+<h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
+<div id="cell-13" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>summary_df <span class="op">=</span> []</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fluorophore, particles <span class="kw">in</span> particles_dict.items():</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    summary_df.append(particles.summary_df.assign(fluorophore<span class="op">=</span>fluorophore))</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>summary_df <span class="op">=</span> pd.concat(summary_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-12" class="cell" data-execution_count="9">
+<div id="cell-14" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>(summary_df</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a> .replace({<span class="st">'fluorophore'</span>: {<span class="st">'Riboflavin+acetic'</span>: <span class="st">'Riboflavin</span><span class="ch">\n</span><span class="st">[AcOH]'</span>}})</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a> .assign(fluorescent<span class="op">=</span><span class="kw">lambda</span> dd: dd[<span class="st">'intensity'</span>] <span class="op">&gt;=</span> <span class="dv">2000</span>)</span>
@@ -419,7 +423,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a> .sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a> .<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="bu">int</span>(<span class="bu">round</span>(x <span class="op">/</span> <span class="dv">10</span>)))</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display">
 <pre><code>fluorophore
 Tyrosine              4064
 Riboflavin\n[AcOH]    3132
@@ -429,7 +433,7 @@ Riboflavin             853
 Name: count, dtype: int64</code></pre>
 </div>
 </div>
-<div id="cell-13" class="cell" data-execution_count="181">
+<div id="cell-15" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> (summary_df</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a> .replace({<span class="st">'fluorophore'</span>: {<span class="st">'Riboflavin+acetic'</span>: <span class="st">'Riboflavin</span><span class="ch">\n</span><span class="st">[AcOH]'</span>}})</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a> .assign(fluorescent<span class="op">=</span><span class="kw">lambda</span> dd: dd[<span class="st">'intensity'</span>] <span class="op">&gt;=</span> <span class="dv">2000</span>)</span>
@@ -457,15 +461,15 @@ Name: count, dtype: int64</code></pre>
 <span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>f.save(<span class="st">'../output/figures/fluorophores_fluorescent_counts.svg'</span>)</span>
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>f.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="181">
+<div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="fluorophores_ms_files/figure-html/cell-10-output-1.png" width="1236" height="936" class="figure-img"></p>
+<p><img src="fluorophores_ms_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="cell-14" class="cell" data-execution_count="157">
+<div id="cell-16" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>intensity_stats <span class="op">=</span> (summary_df</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a> .groupby(<span class="st">'fluorophore'</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a> .agg(mean<span class="op">=</span>(<span class="st">'intensity'</span>, <span class="st">'mean'</span>),</span>
@@ -475,7 +479,7 @@ Name: count, dtype: int64</code></pre>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>      .reset_index()</span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>intensity_stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="157">
+<div class="cell-output cell-output-display">
 <div>
 
 
@@ -537,7 +541,7 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 </div>
-<div id="cell-15" class="cell" data-execution_count="183">
+<div id="cell-17" class="cell" data-execution_count="183">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> (summary_df</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a> .assign(intensity<span class="op">=</span><span class="kw">lambda</span> dd: dd.intensity.astype(<span class="bu">int</span>))</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a> .pipe(<span class="kw">lambda</span> dd: p9.ggplot(dd)</span>
@@ -560,24 +564,15 @@ Name: count, dtype: int64</code></pre>
 <div class="cell-output cell-output-display" data-execution_count="183">
 <div>
 <figure class="figure">
-<p><img src="fluorophores_ms_files/figure-html/cell-12-output-1.png" width="1231" height="1069" class="figure-img"></p>
+<p><img src="fluorophores_ms_files/figure-html/cell-13-output-1.png" width="1231" height="1069" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="cell-16" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>particles_dict[<span class="st">'Tyrosine'</span>].<span class="bu">filter</span>(<span class="st">'intensity &gt; 3000'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Filtering particles with query: intensity &gt; 3000</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="8">
-<pre><code>Collection of 179 aerosol particles measured from 2021-01-27 15:44:02 to 2021-01-27 15:53:58.</code></pre>
-</div>
-</div>
-<div id="cell-17" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fluo_particles_dict <span class="op">=</span> {}</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fluorophore, particles <span class="kw">in</span> particles_dict.items():</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    fluo_particles_dict[fluorophore] <span class="op">=</span> particles.<span class="bu">filter</span>(<span class="st">'intensity &gt;= 2000'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-18" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fluo_particles_dict <span class="op">=</span> {}</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fluorophore, particles <span class="kw">in</span> particles_dict.items():</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    fluo_particles_dict[fluorophore] <span class="op">=</span> particles.<span class="bu">filter</span>(<span class="st">'intensity &gt;= 2000'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Filtering particles with query: intensity &gt;= 2000
 Filtering particles with query: intensity &gt;= 2000
@@ -586,10 +581,10 @@ Filtering particles with query: intensity &gt;= 2000
 Filtering particles with query: intensity &gt;= 2000</code></pre>
 </div>
 </div>
-<div id="cell-18" class="cell" data-execution_count="63">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>super_fluo_particles_dict <span class="op">=</span> {}</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fluorophore, particles <span class="kw">in</span> particles_dict.items():</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    super_fluo_particles_dict[fluorophore] <span class="op">=</span> particles.<span class="bu">filter</span>(<span class="st">'intensity &gt;= 2500'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-19" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>super_fluo_particles_dict <span class="op">=</span> {}</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fluorophore, particles <span class="kw">in</span> particles_dict.items():</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    super_fluo_particles_dict[fluorophore] <span class="op">=</span> particles.<span class="bu">filter</span>(<span class="st">'intensity &gt;= 2500'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Filtering particles with query: intensity &gt;= 2500
 Filtering particles with query: intensity &gt;= 2500
@@ -598,150 +593,153 @@ Filtering particles with query: intensity &gt;= 2500
 Filtering particles with query: intensity &gt;= 2500</code></pre>
 </div>
 </div>
-<div id="cell-19" class="cell" data-execution_count="64">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>spectra_df <span class="op">=</span> []</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fluorophore <span class="kw">in</span> super_fluo_particles_dict:</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, particle <span class="kw">in</span> <span class="bu">enumerate</span>(super_fluo_particles_dict[fluorophore]):</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>        spectra_df.append(particle.spectrum_time_matrix.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>                  .rename(<span class="st">'intensity'</span>)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>                  .reset_index()</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>                  .assign(relative_intensity<span class="op">=</span><span class="kw">lambda</span> dd: dd[<span class="st">'intensity'</span>] <span class="op">/</span> dd[<span class="st">'intensity'</span>].<span class="bu">max</span>())</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>                  .assign(fluorophore<span class="op">=</span>fluorophore)</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>                  .assign(particle_index<span class="op">=</span>i)</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                  .assign(max_intensity<span class="op">=</span><span class="kw">lambda</span> dd: dd[<span class="st">'intensity'</span>].<span class="bu">max</span>())</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a> )</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>spectra_df <span class="op">=</span> pd.concat(spectra_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-20" class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># is this </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-20" class="cell" data-execution_count="66">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">100</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>selected_particles <span class="op">=</span> (spectra_df</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a> .groupby(<span class="st">'fluorophore'</span>)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a> .<span class="bu">apply</span>(<span class="kw">lambda</span> dd: dd[[<span class="st">'particle_index'</span>, <span class="st">'max_intensity'</span>]].drop_duplicates()</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        .sort_values(<span class="st">'max_intensity'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        .head(n).assign(new_index<span class="op">=</span><span class="bu">range</span>(n)))</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>        .reset_index()</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a> [[<span class="st">'fluorophore'</span>, <span class="st">'particle_index'</span>, <span class="st">'new_index'</span>]]</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> (spectra_df</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a> .merge(selected_particles, on<span class="op">=</span>[<span class="st">'fluorophore'</span>, <span class="st">'particle_index'</span>])</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a> .replace(<span class="st">'Riboflavin+acetic'</span>, <span class="st">'Riboflavin [AcOH]'</span>)</span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a> .assign(fluorophore<span class="op">=</span><span class="kw">lambda</span> dd: pd.Categorical(dd[<span class="st">'fluorophore'</span>], categories<span class="op">=</span> [</span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>     <span class="st">'Tyrosine'</span>, <span class="st">'Tryptophan'</span>, <span class="st">'NADH'</span>, <span class="st">'Riboflavin'</span>, <span class="st">'Riboflavin [AcOH]'</span></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a> ]))</span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a> .pipe(<span class="kw">lambda</span> dd: p9.ggplot(dd)</span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.aes(x<span class="op">=</span><span class="st">'wavelength'</span>, y<span class="op">=</span><span class="st">'new_index'</span>)</span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>         <span class="op">+</span> p9.geom_tile(p9.aes(fill<span class="op">=</span><span class="st">'relative_intensity'</span>))</span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>         <span class="op">+</span> p9.scale_x_continuous(expand<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">0</span>), breaks<span class="op">=</span><span class="bu">range</span>(<span class="dv">300</span>, <span class="dv">601</span>, <span class="dv">50</span>))</span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>         <span class="op">+</span> p9.scale_y_continuous(expand<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">0</span>))</span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>         <span class="op">+</span> p9.scale_fill_cmap(<span class="st">'viridis'</span>, labels<span class="op">=</span>percent_format())</span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>         <span class="op">+</span> p9.facet_wrap(<span class="st">'fluorophore'</span>)</span>
-<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>         <span class="op">+</span> p9.labs(x<span class="op">=</span><span class="st">'Wavelength [nm]'</span>, fill<span class="op">=</span><span class="st">'Relative Intensity'</span>)</span>
-<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>         <span class="op">+</span> p9.theme(axis_text_y<span class="op">=</span>p9.element_blank(),</span>
-<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>                      axis_title_y<span class="op">=</span>p9.element_blank(),</span>
-<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>                      axis_ticks_major_y<span class="op">=</span>p9.element_blank(),</span>
-<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>                      legend_position<span class="op">=</span>(<span class="fl">.9</span>, <span class="fl">.125</span>),</span>
-<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>                      legend_key_size<span class="op">=</span><span class="dv">10</span>,</span>
-<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>                      legend_text<span class="op">=</span>p9.element_text(size<span class="op">=</span><span class="dv">8</span>),</span>
-<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>                      legend_title<span class="op">=</span>p9.element_text(size<span class="op">=</span><span class="dv">9</span>, ha<span class="op">=</span><span class="st">'center'</span>),</span>
-<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>                      axis_title_x<span class="op">=</span>p9.element_text(size<span class="op">=</span><span class="dv">10</span>, va<span class="op">=</span><span class="st">'top'</span>),</span>
-<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>                      axis_text_x<span class="op">=</span>p9.element_text(size<span class="op">=</span><span class="dv">7</span>),</span>
-<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>                      figure_size<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>),</span>
-<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>                      plot_margin<span class="op">=</span><span class="fl">.03</span></span>
-<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>         )</span>
-<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a> )</span>
-<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>f.save(<span class="st">'../output/figures/fluorophores_fluorescence_spectra.svg'</span>)</span>
-<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>f.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="66">
-<div>
-<figure class="figure">
-<p><img src="fluorophores_ms_files/figure-html/cell-17-output-1.png" width="1743" height="1175" class="figure-img"></p>
-</figure>
+<div id="cell-21" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>spectra_df <span class="op">=</span> []</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fluorophore <span class="kw">in</span> super_fluo_particles_dict:</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, particle <span class="kw">in</span> <span class="bu">enumerate</span>(super_fluo_particles_dict[fluorophore]):</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        spectra_df.append(particle.spectrum_time_matrix.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>                  .rename(<span class="st">'intensity'</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>                  .reset_index()</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>                  .assign(relative_intensity<span class="op">=</span><span class="kw">lambda</span> dd: dd[<span class="st">'intensity'</span>] <span class="op">/</span> dd[<span class="st">'intensity'</span>].<span class="bu">max</span>())</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>                  .assign(fluorophore<span class="op">=</span>fluorophore)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>                  .assign(particle_index<span class="op">=</span>i)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>                  .assign(max_intensity<span class="op">=</span><span class="kw">lambda</span> dd: dd[<span class="st">'intensity'</span>].<span class="bu">max</span>())</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a> )</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>spectra_df <span class="op">=</span> pd.concat(spectra_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-</div>
-<div id="cell-21" class="cell" data-execution_count="68">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> (spectra_df</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a> .merge(selected_particles, on<span class="op">=</span>[<span class="st">'fluorophore'</span>, <span class="st">'particle_index'</span>])</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a> .replace(<span class="st">'Riboflavin+acetic'</span>, <span class="st">'Riboflavin [AcOH]'</span>)</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a> .assign(fluorophore<span class="op">=</span><span class="kw">lambda</span> dd: pd.Categorical(dd[<span class="st">'fluorophore'</span>], categories<span class="op">=</span> [</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>     <span class="st">'Tyrosine'</span>, <span class="st">'Tryptophan'</span>, <span class="st">'NADH'</span>, <span class="st">'Riboflavin'</span>, <span class="st">'Riboflavin [AcOH]'</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a> ]))</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a> .pipe(<span class="kw">lambda</span> dd: p9.ggplot(dd)</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.aes(x<span class="op">=</span><span class="st">'wavelength'</span>, y<span class="op">=</span><span class="st">'relative_intensity'</span>)</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.scale_color_manual([<span class="st">'black'</span>, <span class="st">'#EE1E26'</span>, <span class="st">'#5EBE46'</span>, <span class="st">'#344CA5'</span>, <span class="st">"#344CA5"</span>])</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.scale_fill_manual([<span class="st">'black'</span>, <span class="st">'#EE1E26'</span>, <span class="st">'#5EBE46'</span>, <span class="st">'#344CA5'</span>, <span class="st">"#344CA5"</span>])</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.scale_x_continuous(breaks<span class="op">=</span><span class="bu">range</span>(<span class="dv">300</span>, <span class="dv">601</span>, <span class="dv">50</span>))</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.scale_y_continuous(breaks<span class="op">=</span>[<span class="dv">0</span>, <span class="fl">.2</span>, <span class="fl">.4</span>, <span class="fl">.6</span>, <span class="fl">.8</span>, <span class="dv">1</span>])</span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.labs(y<span class="op">=</span><span class="st">'Relative Fluorescence Intensity [a.u.]'</span>, x<span class="op">=</span><span class="st">'Wavelength [nm]'</span>, color<span class="op">=</span><span class="st">''</span>, fill<span class="op">=</span><span class="st">''</span>)</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.stat_summary(geom<span class="op">=</span><span class="st">'line'</span>, size<span class="op">=</span><span class="fl">.7</span>, fun_y<span class="op">=</span>np.median, mapping<span class="op">=</span>p9.aes(color<span class="op">=</span><span class="st">'fluorophore'</span>, linetype<span class="op">=</span><span class="st">'fluorophore=="Riboflavin"'</span>))</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.stat_summary(fun_ymax<span class="op">=</span><span class="kw">lambda</span> x: x.quantile(<span class="fl">.75</span>),</span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>                         fun_ymin<span class="op">=</span><span class="kw">lambda</span> x: x.quantile(<span class="fl">.25</span>),</span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>                          geom<span class="op">=</span><span class="st">'ribbon'</span>, alpha<span class="op">=</span><span class="fl">.15</span>, mapping<span class="op">=</span>p9.aes(fill<span class="op">=</span><span class="st">'fluorophore'</span>))</span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.guides(linetype<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.theme(figure_size<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">3</span>),</span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>                  axis_title_y<span class="op">=</span>p9.element_text(size<span class="op">=</span><span class="dv">10</span>),</span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>       )</span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>       )</span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>f.save(<span class="st">'../output/figures/fluorophores_fluorescence_spectra_median.svg'</span>)</span>
-<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>f.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="68">
-<div>
-<figure class="figure">
-<p><img src="fluorophores_ms_files/figure-html/cell-18-output-1.png" width="1530" height="930" class="figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div id="cell-22" class="cell" data-execution_count="75">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>lifetimes <span class="op">=</span> []</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fluorophore, particles <span class="kw">in</span> super_fluo_particles_dict.items():</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    selected_idxs <span class="op">=</span> selected_particles.query(<span class="st">'fluorophore == @fluorophore'</span>)[<span class="st">'particle_index'</span>]</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> selected_idxs:</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>        particle <span class="op">=</span> particles[i]</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>        lifetimes.append(particle.lifetime</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>                         .assign(fluorophore<span class="op">=</span>fluorophore)</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>                         .assign(particle_index<span class="op">=</span>i)</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>lifetimes <span class="op">=</span> pd.concat(lifetimes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="cell-23" class="cell" data-execution_count="76">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>lifetime_stats <span class="op">=</span> (lifetimes</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a> .replace({<span class="st">'350-400 nm'</span>: <span class="st">'300-340 nm'</span>})</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a> .groupby([<span class="st">'fluorophore'</span>, <span class="st">'time'</span>, <span class="st">'wavelength_range'</span>], as_index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a> .agg(</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>     median<span class="op">=</span>(<span class="st">'intensity'</span>, <span class="st">'median'</span>),</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    q05<span class="op">=</span>(<span class="st">'intensity'</span>, <span class="kw">lambda</span> x: x.quantile(<span class="fl">.05</span>)),</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    q25<span class="op">=</span>(<span class="st">'intensity'</span>, <span class="kw">lambda</span> x: x.quantile(<span class="fl">.25</span>)),</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    q75<span class="op">=</span>(<span class="st">'intensity'</span>, <span class="kw">lambda</span> x: x.quantile(<span class="fl">.75</span>)),</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    q95<span class="op">=</span>(<span class="st">'intensity'</span>, <span class="kw">lambda</span> x: x.quantile(<span class="fl">.95</span>)),</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a> )</span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="cell-24" class="cell" data-execution_count="86">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>(lifetime_stats</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a> .replace(<span class="st">'Riboflavin+acetic'</span>, <span class="st">'Riboflavin [AcOH]'</span>)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a> .pipe(<span class="kw">lambda</span> dd: p9.ggplot(dd)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.aes(x<span class="op">=</span><span class="st">'time'</span>, y<span class="op">=</span><span class="st">'median'</span>, color<span class="op">=</span><span class="st">'wavelength_range'</span>)</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.geom_line()</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.facet_wrap(<span class="st">'fluorophore'</span>, ncol<span class="op">=</span><span class="dv">3</span>, scales<span class="op">=</span><span class="st">'free_y'</span>)</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.labs(x<span class="op">=</span><span class="st">'Time [ns]'</span>, y<span class="op">=</span><span class="st">'Median Intensity [a.u.]'</span>, color<span class="op">=</span><span class="st">'Wavelength Range'</span>)</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.theme(</span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>           legend_position<span class="op">=</span>(<span class="fl">.925</span>, <span class="fl">.1</span>),</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>           figure_size<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.5</span>),</span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>           legend_title<span class="op">=</span>p9.element_text(size<span class="op">=</span><span class="dv">9</span>),</span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>           legend_text<span class="op">=</span>p9.element_text(size<span class="op">=</span><span class="dv">8</span>),</span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>           legend_key_size<span class="op">=</span><span class="dv">12</span>,</span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>                  )</span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a> )</span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-22" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>selected_particles <span class="op">=</span> (spectra_df</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a> .groupby(<span class="st">'fluorophore'</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a> .<span class="bu">apply</span>(<span class="kw">lambda</span> dd: dd[[<span class="st">'particle_index'</span>, <span class="st">'max_intensity'</span>]].drop_duplicates()</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        .sort_values(<span class="st">'max_intensity'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        .head(n).assign(new_index<span class="op">=</span><span class="bu">range</span>(<span class="dv">1</span>, n <span class="op">+</span> <span class="dv">1</span>)))</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        .reset_index()</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a> [[<span class="st">'fluorophore'</span>, <span class="st">'particle_index'</span>, <span class="st">'new_index'</span>]]</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> (spectra_df</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a> .merge(selected_particles, on<span class="op">=</span>[<span class="st">'fluorophore'</span>, <span class="st">'particle_index'</span>])</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a> .replace(<span class="st">'Riboflavin+acetic'</span>, <span class="st">'Riboflavin [AcOH]'</span>)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a> .assign(fluorophore<span class="op">=</span><span class="kw">lambda</span> dd: pd.Categorical(dd[<span class="st">'fluorophore'</span>], categories<span class="op">=</span> [</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>     <span class="st">'Tyrosine'</span>, <span class="st">'Tryptophan'</span>, <span class="st">'NADH'</span>, <span class="st">'Riboflavin'</span>, <span class="st">'Riboflavin [AcOH]'</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a> ]))</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a> .pipe(<span class="kw">lambda</span> dd: p9.ggplot(dd)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.aes(x<span class="op">=</span><span class="st">'wavelength'</span>, y<span class="op">=</span><span class="st">'new_index'</span>)</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>         <span class="op">+</span> p9.geom_tile(p9.aes(fill<span class="op">=</span><span class="st">'relative_intensity'</span>))</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>         <span class="op">+</span> p9.scale_x_continuous(expand<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">0</span>), breaks<span class="op">=</span><span class="bu">range</span>(<span class="dv">300</span>, <span class="dv">601</span>, <span class="dv">50</span>))</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>         <span class="op">+</span> p9.scale_y_continuous(expand<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">0</span>), trans<span class="op">=</span><span class="st">'reverse'</span>, breaks<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">50</span>, <span class="dv">100</span>])</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>         <span class="op">+</span> p9.scale_fill_cmap(<span class="st">'viridis'</span>, labels<span class="op">=</span>percent_format())</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>         <span class="op">+</span> p9.facet_wrap(<span class="st">'fluorophore'</span>)</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>         <span class="op">+</span> p9.labs(x<span class="op">=</span><span class="st">'Wavelength [nm]'</span>, y<span class="op">=</span><span class="st">'Particle index (top 100 most fluorescent)'</span>, fill<span class="op">=</span><span class="st">'Relative Intensity'</span>)</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>         <span class="op">+</span> p9.theme(</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>              axis_text_y<span class="op">=</span>p9.element_text(size<span class="op">=</span><span class="dv">7</span>),</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>              axis_title_y<span class="op">=</span>p9.element_text(size<span class="op">=</span><span class="dv">10</span>),</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>              legend_position<span class="op">=</span>(<span class="fl">.9</span>, <span class="fl">.05</span>),</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>              legend_key_size<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>              legend_text<span class="op">=</span>p9.element_text(size<span class="op">=</span><span class="dv">8</span>),</span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>              legend_title<span class="op">=</span>p9.element_text(size<span class="op">=</span><span class="dv">9</span>, ha<span class="op">=</span><span class="st">'center'</span>),</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>              axis_title_x<span class="op">=</span>p9.element_text(size<span class="op">=</span><span class="dv">10</span>, va<span class="op">=</span><span class="st">'top'</span>),</span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>              axis_text_x<span class="op">=</span>p9.element_text(size<span class="op">=</span><span class="dv">7</span>),</span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>              figure_size<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>),</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>              plot_margin<span class="op">=</span><span class="fl">.03</span></span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>         )</span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a> )</span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>f.save(<span class="st">'../output/figures/fluorophores_fluorescence_spectra.svg'</span>)</span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>f.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="fluorophores_ms_files/figure-html/cell-21-output-1.png" width="1800" height="1050" class="figure-img"></p>
+<p><img src="fluorophores_ms_files/figure-html/cell-18-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-23" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> (spectra_df</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a> .merge(selected_particles, on<span class="op">=</span>[<span class="st">'fluorophore'</span>, <span class="st">'particle_index'</span>])</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a> .replace(<span class="st">'Riboflavin+acetic'</span>, <span class="st">'Riboflavin [AcOH]'</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a> .assign(fluorophore<span class="op">=</span><span class="kw">lambda</span> dd: pd.Categorical(dd[<span class="st">'fluorophore'</span>], categories<span class="op">=</span> [</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>     <span class="st">'Tyrosine'</span>, <span class="st">'Tryptophan'</span>, <span class="st">'NADH'</span>, <span class="st">'Riboflavin'</span>, <span class="st">'Riboflavin [AcOH]'</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a> ]))</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a> .pipe(<span class="kw">lambda</span> dd: p9.ggplot(dd)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.aes(x<span class="op">=</span><span class="st">'wavelength'</span>, y<span class="op">=</span><span class="st">'relative_intensity'</span>)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.scale_color_manual([<span class="st">'black'</span>, <span class="st">'#EE1E26'</span>, <span class="st">'#5EBE46'</span>, <span class="st">'#344CA5'</span>, <span class="st">"#344CA5"</span>])</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.scale_fill_manual([<span class="st">'black'</span>, <span class="st">'#EE1E26'</span>, <span class="st">'#5EBE46'</span>, <span class="st">'#344CA5'</span>, <span class="st">"#344CA5"</span>])</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.scale_x_continuous(breaks<span class="op">=</span><span class="bu">range</span>(<span class="dv">300</span>, <span class="dv">601</span>, <span class="dv">50</span>))</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.scale_y_continuous(breaks<span class="op">=</span>[<span class="dv">0</span>, <span class="fl">.2</span>, <span class="fl">.4</span>, <span class="fl">.6</span>, <span class="fl">.8</span>, <span class="dv">1</span>])</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.labs(y<span class="op">=</span><span class="st">'Relative Fluorescence Intensity [a.u.]'</span>, x<span class="op">=</span><span class="st">'Wavelength [nm]'</span>, color<span class="op">=</span><span class="st">''</span>, fill<span class="op">=</span><span class="st">''</span>)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.stat_summary(geom<span class="op">=</span><span class="st">'line'</span>, size<span class="op">=</span><span class="fl">.7</span>, fun_y<span class="op">=</span>np.median, mapping<span class="op">=</span>p9.aes(color<span class="op">=</span><span class="st">'fluorophore'</span>, linetype<span class="op">=</span><span class="st">'fluorophore=="Riboflavin"'</span>))</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.stat_summary(fun_ymax<span class="op">=</span><span class="kw">lambda</span> x: x.quantile(<span class="fl">.75</span>),</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>                         fun_ymin<span class="op">=</span><span class="kw">lambda</span> x: x.quantile(<span class="fl">.25</span>),</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>                          geom<span class="op">=</span><span class="st">'ribbon'</span>, alpha<span class="op">=</span><span class="fl">.15</span>, mapping<span class="op">=</span>p9.aes(fill<span class="op">=</span><span class="st">'fluorophore'</span>))</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.guides(linetype<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.theme(figure_size<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">3</span>),</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>                  axis_title_y<span class="op">=</span>p9.element_text(size<span class="op">=</span><span class="dv">10</span>),</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>       )</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>       )</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>f.save(<span class="st">'../output/figures/fluorophores_fluorescence_spectra_median.svg'</span>)</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>f.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fluorophores_ms_files/figure-html/cell-19-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-24" class="cell" data-execution_count="75">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>lifetimes <span class="op">=</span> []</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fluorophore, particles <span class="kw">in</span> super_fluo_particles_dict.items():</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    selected_idxs <span class="op">=</span> selected_particles.query(<span class="st">'fluorophore == @fluorophore'</span>)[<span class="st">'particle_index'</span>]</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> selected_idxs:</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        particle <span class="op">=</span> particles[i]</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        lifetimes.append(particle.lifetime</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>                         .assign(fluorophore<span class="op">=</span>fluorophore)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>                         .assign(particle_index<span class="op">=</span>i)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>lifetimes <span class="op">=</span> pd.concat(lifetimes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-25" class="cell" data-execution_count="76">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>lifetime_stats <span class="op">=</span> (lifetimes</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a> .replace({<span class="st">'350-400 nm'</span>: <span class="st">'300-340 nm'</span>})</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a> .groupby([<span class="st">'fluorophore'</span>, <span class="st">'time'</span>, <span class="st">'wavelength_range'</span>], as_index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a> .agg(</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>     median<span class="op">=</span>(<span class="st">'intensity'</span>, <span class="st">'median'</span>),</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    q05<span class="op">=</span>(<span class="st">'intensity'</span>, <span class="kw">lambda</span> x: x.quantile(<span class="fl">.05</span>)),</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    q25<span class="op">=</span>(<span class="st">'intensity'</span>, <span class="kw">lambda</span> x: x.quantile(<span class="fl">.25</span>)),</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    q75<span class="op">=</span>(<span class="st">'intensity'</span>, <span class="kw">lambda</span> x: x.quantile(<span class="fl">.75</span>)),</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    q95<span class="op">=</span>(<span class="st">'intensity'</span>, <span class="kw">lambda</span> x: x.quantile(<span class="fl">.95</span>)),</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a> )</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-26" class="cell" data-execution_count="86">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>(lifetime_stats</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a> .replace(<span class="st">'Riboflavin+acetic'</span>, <span class="st">'Riboflavin [AcOH]'</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a> .pipe(<span class="kw">lambda</span> dd: p9.ggplot(dd)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.aes(x<span class="op">=</span><span class="st">'time'</span>, y<span class="op">=</span><span class="st">'median'</span>, color<span class="op">=</span><span class="st">'wavelength_range'</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.geom_line()</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.facet_wrap(<span class="st">'fluorophore'</span>, ncol<span class="op">=</span><span class="dv">3</span>, scales<span class="op">=</span><span class="st">'free_y'</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.labs(x<span class="op">=</span><span class="st">'Time [ns]'</span>, y<span class="op">=</span><span class="st">'Median Intensity [a.u.]'</span>, color<span class="op">=</span><span class="st">'Wavelength Range'</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>       <span class="op">+</span> p9.theme(</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>           legend_position<span class="op">=</span>(<span class="fl">.925</span>, <span class="fl">.1</span>),</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>           figure_size<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.5</span>),</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>           legend_title<span class="op">=</span>p9.element_text(size<span class="op">=</span><span class="dv">9</span>),</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>           legend_text<span class="op">=</span>p9.element_text(size<span class="op">=</span><span class="dv">8</span>),</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>           legend_key_size<span class="op">=</span><span class="dv">12</span>,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>                  )</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a> )</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fluorophores_ms_files/figure-html/cell-22-output-1.png" width="1800" height="1050" class="figure-img"></p>
 </figure>
 </div>
 </div>
