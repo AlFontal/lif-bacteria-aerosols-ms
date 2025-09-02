@@ -9,6 +9,8 @@
 
 This repository contains the code and data to reproduce the results of the manuscript *"Benchmarking Laser-induced Fluorescence and Machine Learning for real-time identification of bacteria in bioaerosols"* by Fontal et al. (2025). In this study, we demonstrate a method to (1) aerosolize bacteria using a nebulizer emulating bacteria-laden droplets, (2) modify an existing equipment (Rapid-E) to facilitate the characterization of microbial aerosols and (3) use machine learning models to detect bacteria and classify them in near-real time. 
 
+A pre-print of the manuscript with the pre-peer reviewed version is available at https://doi.org/10.5194/egusphere-2025-2484
+
 We attempted to make the whole code as reproducible as possible, so that anyone can run the code and reproduce the results. We also used Quarto to render the Jupyter notebooks and publish them as static HTML files on GitHub Pages, which should lead to a more user-friendly experience when browsing the notebooks. These can be found in the `reports/` folder of this repository, but are also available online at [alfontal.github.io/lif-bacteria-aerosols-ms](https://alfontal.github.io/lif-bacteria-aerosols-ms)
 
 
@@ -39,7 +41,7 @@ The `reports/` folder contains the Jupyter notebooks used to generate the figure
 
 1. bacteria_ms.ipynb: This notebook contains the main analysis and results of the manuscript, where we analyze the aerosolized bacteria and train and evaluate random forests to classify them.
 
-2. fluorophore_ms.ipynb: This notebook contains the tests that we ran with aerosolized fluorophores, which were used to validate the Rapid-E modifications and its ability to detect the fluorophores characteristic of bacterial cells as part of aerosol particles.
+2. fluorophores_ms.ipynb: This notebook contains the tests that we ran with aerosolized fluorophores, which were used to validate the Rapid-E modifications and its ability to detect the fluorophores characteristic of bacterial cells as part of aerosol particles.
 
 The other files in the top level directory serve as configuration files for the project, such as the `pyproject.toml` and files for managing dependencies, the `.gitignore` file to specify which files to ignore when pushing to the repository, and the workflow file for GitHub Actions in .github/.
 

@@ -15,4 +15,4 @@ Here you will find two reports:
 
 1. [bacteria_ms.ipynb](bacteria_ms.ipynb): This notebook contains the main analysis and results of the manuscript, where we analyze the aerosolized bacteria and train and evaluate random forests to classify them.
 
-2. [fluorophore_ms.ipynb](fluorophore_ms.ipynb): This notebook contains the tests that we ran with aerosolized fluorophores, which were used to validate the Rapid-E modifications and its ability to detect the fluorophores characteristic of bacterial cells as part of aerosol particles.
+2. [fluorophore_ms.ipynb](fluorophores_ms.ipynb): This notebook contains the tests that we ran with aerosolized fluorophores, which were used to validate the Rapid-E modifications and its ability to detect the fluorophores characteristic of bacterial cells as part of aerosol particles.
