@@ -1,4 +1,4 @@
-# Benchmarking Laser-induced Fluorescence and Machine Learning for real-time identification of bacteria in bioaerosols
+# Laser-Induced Fluorescence coupled with Machine Learning as an effective approach for real-time identification of bacteria in bioaerosols
 
 ![license](https://img.shields.io/badge/license-MIT-green)
 ![python](https://img.shields.io/badge/python->3.11-orange?logo=Python&logoColor=white)
@@ -7,9 +7,9 @@
 
 ## Overview
 
-This repository contains the code and data to reproduce the results of the manuscript *"Benchmarking Laser-induced Fluorescence and Machine Learning for real-time identification of bacteria in bioaerosols"* by Fontal et al. (2025). In this study, we demonstrate a method to (1) aerosolize bacteria using a nebulizer emulating bacteria-laden droplets, (2) modify an existing equipment (Rapid-E) to facilitate the characterization of microbial aerosols and (3) use machine learning models to detect bacteria and classify them in near-real time. 
+This repository contains the code and data to reproduce the results of the manuscript *"Laser-Induced Fluorescence coupled with Machine Learning as an effective approach for real-time identification of bacteria in bioaerosols"* by Fontal et al. (2025). In this study, we demonstrate a method to (1) aerosolize bacteria using a nebulizer emulating bacteria-laden droplets, (2) modify an existing equipment (Rapid-E) to facilitate the characterization of microbial aerosols and (3) use machine learning models to detect bacteria and classify them in near-real time. 
 
-A pre-print of the manuscript with the pre-peer reviewed version is available at https://doi.org/10.5194/egusphere-2025-2484
+A pre-print of the manuscript with the pre-peer reviewed version and the whole interactive review discussion available at https://doi.org/10.5194/egusphere-2025-2484 with the final peer-reviewed version to be published in the coming weeks in the Atmospheric Measurement Techniques (AMT) journal.
 
 We attempted to make the whole code as reproducible as possible, so that anyone can run the code and reproduce the results. We also used Quarto to render the Jupyter notebooks and publish them as static HTML files on GitHub Pages, which should lead to a more user-friendly experience when browsing the notebooks. These can be found in the `reports/` folder of this repository, but are also available online at [alfontal.github.io/lif-bacteria-aerosols-ms](https://alfontal.github.io/lif-bacteria-aerosols-ms)
 
