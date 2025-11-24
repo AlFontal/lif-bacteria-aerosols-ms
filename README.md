@@ -5,6 +5,9 @@
 ![Quarto](https://img.shields.io/badge/quarto->1.6-skyblue?logo=quarto)
 ![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.15485701.svg)
 
+<img width="817" height="477" alt="image" src="https://github.com/user-attachments/assets/d39bc4e1-0b45-472d-ad38-775755f9c054" />
+
+
 ## Overview
 
 This repository contains the code and data to reproduce the results of the manuscript *"Laser-Induced Fluorescence coupled with Machine Learning as an effective approach for real-time identification of bacteria in bioaerosols"* by Fontal et al. (2025). In this study, we demonstrate a method to (1) aerosolize bacteria using a nebulizer emulating bacteria-laden droplets, (2) modify an existing equipment (Rapid-E) to facilitate the characterization of microbial aerosols and (3) use machine learning models to detect bacteria and classify them in near-real time. 
